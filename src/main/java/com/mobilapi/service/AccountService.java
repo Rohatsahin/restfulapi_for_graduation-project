@@ -23,7 +23,7 @@ public class AccountService {
         return account;
     }
 
-    public Account saveUser(Account account) {
+    public Account saveAccount(Account account) {
         String hashed_password = passwordEncoder.encodePassword(account.getPassword(), null);
         account.setPassword(hashed_password);
         return accountRepository.save(account);

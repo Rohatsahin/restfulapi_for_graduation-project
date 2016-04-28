@@ -26,7 +26,7 @@ public class RegisterController {
     @ResponseBody
     public ResponseEntity<UserDto> saveNewUser(@RequestBody @Valid UserDto userDto) {
 
-        accountService.saveUser(userDto.createUser());
+        accountService.saveAccount(userDto.createUser());
         authenticationService.authenticate(userDto.getEmail(), userDto.getPassword());
 
         return new ResponseEntity<>(HttpStatus.OK);
