@@ -2,6 +2,7 @@ package com.mobilapi.controller.general;
 
 
 import com.mobilapi.domain.shop.Promotion;
+import com.mobilapi.domain.shop.Restaurant;
 import com.mobilapi.service.RestaurantService;
 import com.mobilapi.service.dto.RestaurantListDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,15 @@ public class RestaurantController {
 
         return restaurantService.getPromotionByLocalize(city, district);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/restaurant")
+    public Restaurant getRestaurantInfoById(@RequestParam(value = "id") String id) {
+
+        return restaurantService.getRestaurantById(Long.valueOf(id));
+    }
+
+
+
 
 
 }

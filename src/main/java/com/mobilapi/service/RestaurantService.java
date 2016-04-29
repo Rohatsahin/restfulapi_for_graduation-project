@@ -46,6 +46,11 @@ public class RestaurantService {
         return promotions;
     }
 
+    public Restaurant getRestaurantById(Long id) {
+
+        return restaurantRepository.findById(id);
+    }
+
     private List<Restaurant> getRestaurantByLocation(String city, String district) {
         return restaurantRepository.findByCityAndDistrict(city, district);
     }

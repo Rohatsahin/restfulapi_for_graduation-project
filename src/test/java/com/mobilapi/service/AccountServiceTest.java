@@ -52,7 +52,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void shouldReturnNullWhenEmailNotRegister() {
+    public void shouldReturnTrueWhenEmailNotRegister() {
 
         when(accountRepository.findByEmail("rohat@test.com")).thenReturn(null);
 

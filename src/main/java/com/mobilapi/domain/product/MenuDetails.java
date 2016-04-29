@@ -11,20 +11,16 @@ public class MenuDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private  String name;
+    private String name;
 
     private String explanation;
 
-    private Long  price;
+    private Long price;
 
-    @OneToMany
-    @JoinTable(name = "menu_details_extra",joinColumns = {@JoinColumn(name = "menu_detail_id",referencedColumnName = "id")}
-              ,inverseJoinColumns = {@JoinColumn(name = "menu_details_list_id",referencedColumnName = "id")})
-    private Set<MenuDetailsList>  menuDetailsLists;
-
-    @OneToOne
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinTable(name = "menu_details_extra", joinColumns = {@JoinColumn(name = "menu_detail_id", referencedColumnName = "id")}
+            , inverseJoinColumns = {@JoinColumn(name = "menu_details_list_id", referencedColumnName = "id")})
+    private Set<MenuDetailsList> menuDetailsLists;
 
     public Long getId() {
         return id;
@@ -56,14 +52,6 @@ public class MenuDetails {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
-    }
-
-    public Menu getMenu() {
-        return menu;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
     }
 
     public Set<MenuDetailsList> getMenuDetailsLists() {

@@ -3,6 +3,7 @@ package com.mobilapi.domain.product;
 import com.mobilapi.domain.shop.Restaurant;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Menu {
@@ -12,10 +13,12 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "menu")
-    private MenuDetails menuDetails;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "menu_items" ,joinColumns = {@JoinColumn(name = "menu_id",referencedColumnName = "menu_id")},
+            inverseJoinColumns ={@JoinColumn(name = "menu_details",referencedColumnName = "id")} )
+    private Set<MenuDetails> menuDetails;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
@@ -27,11 +30,11 @@ public class Menu {
         this.id = id;
     }
 
-    public MenuDetails getMenuDetails() {
+    public Set<MenuDetails> getMenuDetails() {
         return menuDetails;
     }
 
-    public void setMenuDetails(MenuDetails menuDetails) {
+    public void setMenuDetails(Set<MenuDetails> menuDetails) {
         this.menuDetails = menuDetails;
     }
 

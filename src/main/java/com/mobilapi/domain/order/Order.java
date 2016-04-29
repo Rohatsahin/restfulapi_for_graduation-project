@@ -2,7 +2,7 @@ package com.mobilapi.domain.order;
 
 import com.mobilapi.domain.customer.Location;
 import com.mobilapi.domain.customer.Account;
-import com.mobilapi.domain.product.MenuDetails;
+import com.mobilapi.domain.product.Menu;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,9 +17,9 @@ public class Order {
     private Long id;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "order_menuDetails",joinColumns = {@JoinColumn(name = "order_id",referencedColumnName = "id")}
-    ,inverseJoinColumns = {@JoinColumn(name = "menuDetailsList_id",referencedColumnName = "id")})
-    private List<MenuDetails> menuDetailsList;
+    @JoinTable(name = "order_menu",joinColumns = {@JoinColumn(name = "order_id",referencedColumnName = "id")}
+    ,inverseJoinColumns = {@JoinColumn(name = "menu_id",referencedColumnName = "menu_id")})
+    private List<Menu> menus;
 
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     private Account account;
@@ -40,12 +40,12 @@ public class Order {
         this.id = id;
     }
 
-    public List<MenuDetails> getMenuDetailsList() {
-        return menuDetailsList;
+    public List<Menu> getMenuDetailsList() {
+        return menus;
     }
 
-    public void setMenuDetailsList(List<MenuDetails> menuDetailsList) {
-        this.menuDetailsList = menuDetailsList;
+    public void setMenuDetailsList(List<Menu> menus) {
+        this.menus = menus;
     }
 
     public Account getAccount() {

@@ -30,7 +30,7 @@ public class UserController {
     @Autowired
     private LocationService locationService;
 
-    @RequestMapping(value = "/secure/getOrder", method = RequestMethod.GET)
+    @RequestMapping(value = "/getOrder", method = RequestMethod.GET)
     public List<Order> getCurrentAccountOrder() {
 
         Account account = accountService.findByEmail(authenticationService.getCurrentAccount().getEmail());
@@ -39,7 +39,7 @@ public class UserController {
         return order;
     }
 
-    @RequestMapping(value = "/secure/createOrder", method = RequestMethod.POST)
+    @RequestMapping(value = "/createOrder", method = RequestMethod.POST)
     @ResponseBody
     public void createLocationByAccount(@RequestBody Location location, Principal principal) {
 
@@ -49,7 +49,7 @@ public class UserController {
         locationService.createNewLocation(location);
     }
 
-    @RequestMapping(value = "/secure/getLocations", method = RequestMethod.GET)
+    @RequestMapping(value = "/getLocations", method = RequestMethod.GET)
     public List<Location> getLocationsByAccount() {
 
         return locationService.getAllLocationByAccount();
