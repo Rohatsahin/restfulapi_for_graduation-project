@@ -9,6 +9,8 @@ import com.mobilapi.service.AccountService;
 import com.mobilapi.service.LocationService;
 import com.mobilapi.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -22,37 +24,27 @@ public class UserController {
     private AccountService accountService;
 
     @Autowired
-    private AuthenticationService authenticationService;
-
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
     private LocationService locationService;
 
-    @RequestMapping(value = "/getOrder", method = RequestMethod.GET)
-    public List<Order> getCurrentAccountOrder() {
-
-        Account account = accountService.findByEmail(authenticationService.getCurrentAccount().getEmail());
-        List<Order> order = orderService.getAllOrderByAccount(account);
-
-        return order;
-    }
 
     @RequestMapping(value = "/createOrder", method = RequestMethod.POST)
     @ResponseBody
-    public void createLocationByAccount(@RequestBody Location location, Principal principal) {
-
+    public ResponseEntity createLocationByAccount(@RequestBody Location location, Principal principal) {
         Account account = accountService.findByEmail(principal.getName());
-        location.setAccount(account);
-
-        locationService.createNewLocation(location);
+        if(account.equals(null)){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }else {
+            location.setAccount(account);
+            locationService.createNewLocation(location);
+            return new ResponseEntity(HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/getLocations", method = RequestMethod.GET)
-    public List<Location> getLocationsByAccount() {
+    @ResponseBody
+    public ResponseEntity getLocationsByAccount() {
 
-        return locationService.getAllLocationByAccount();
+        return new ResponseEntity(locationService.getAllLocationByAccount(), HttpStatus.OK);
     }
 
 

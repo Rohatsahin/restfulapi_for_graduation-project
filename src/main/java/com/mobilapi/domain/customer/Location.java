@@ -31,7 +31,8 @@ public class Location {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
     private Account account;
 
 

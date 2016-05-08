@@ -2,10 +2,10 @@ package com.mobilapi.domain.order;
 
 import com.mobilapi.domain.customer.Location;
 import com.mobilapi.domain.customer.Account;
-import com.mobilapi.domain.product.Menu;
+import com.mobilapi.domain.product.Product;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,20 +16,21 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "order_menu",joinColumns = {@JoinColumn(name = "order_id",referencedColumnName = "id")}
-    ,inverseJoinColumns = {@JoinColumn(name = "menu_id",referencedColumnName = "menu_id")})
-    private List<Menu> menus;
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "order_products", joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")}
+            , inverseJoinColumns = {@JoinColumn(name = "products_id", referencedColumnName = "id")})
+    private List<Product> products;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
     private Account account;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
+    private DateTime createDate;
 
     private Long price;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "location_id")
     private Location location;
 
     public Long getId() {
@@ -40,12 +41,12 @@ public class Order {
         this.id = id;
     }
 
-    public List<Menu> getMenuDetailsList() {
-        return menus;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setMenuDetailsList(List<Menu> menus) {
-        this.menus = menus;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public Account getAccount() {
@@ -56,11 +57,11 @@ public class Order {
         this.account = account;
     }
 
-    public Date getCreateDate() {
+    public DateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(DateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -94,5 +95,10 @@ public class Order {
     @Override
     public int hashCode() {
         return getId().hashCode();
+    }
+
+    @PostPersist
+    public void setCreateDate() {
+        setCreateDate(new DateTime());
     }
 }

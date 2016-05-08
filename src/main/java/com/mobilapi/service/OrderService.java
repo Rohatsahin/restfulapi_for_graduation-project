@@ -19,10 +19,4 @@ public class OrderService {
         return orderRepository.findAllByAccount(account);
     }
 
-    public void createOrder(Order order){
-        orderRepository.save(order);
-    }
-
-
-
 }

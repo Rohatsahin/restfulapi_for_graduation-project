@@ -25,6 +25,9 @@ public class Account {
     private String password;
 
     @Column(nullable = false)
+    private String phone;
+
+    @Column(nullable = false)
     private String city;
 
     @Column(nullable = false)
@@ -96,6 +99,14 @@ public class Account {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

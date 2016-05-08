@@ -1,7 +1,8 @@
 package com.mobilapi.domain.shop;
 
 
-import com.mobilapi.domain.product.Menu;
+import com.mobilapi.domain.category.Category;
+import com.mobilapi.domain.product.Price;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -19,10 +20,10 @@ public class Restaurant {
     private String name;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private String address;
 
     @Column(nullable = false)
-    private String presentationTime;
+    private String phoneNumber;
 
     @Column(nullable = false)
     private String city;
@@ -30,14 +31,14 @@ public class Restaurant {
     @Column(nullable = false)
     private String district;
 
-    @Column(nullable = false)
-    private String mersis;
-
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "restaurant")
     private Score score;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "restaurant")
-    private Menu menu;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "restaurant_category", joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
+            , inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")})
+    private Set<Category> categories;
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "restaurant_payments", joinColumns =
@@ -56,6 +57,12 @@ public class Restaurant {
             , inverseJoinColumns = {@JoinColumn(name = "service_location_id", referencedColumnName = "id")})
     private Set<ServiceLocations> serviceLocationses;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "restaurant_openhour", joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
+            , inverseJoinColumns = {@JoinColumn(name = "openHour_id", referencedColumnName = "id")})
+    private Set<OpenHours> openHourses;
+
+
     public Long getId() {
         return id;
     }
@@ -72,52 +79,20 @@ public class Restaurant {
         this.name = name;
     }
 
-    public String getPresentationTime() {
-        return presentationTime;
+    public String getAddress() {
+        return address;
     }
 
-    public void setPresentationTime(String presentationTime) {
-        this.presentationTime = presentationTime;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Score getScore() {
-        return score;
-    }
-
-    public void setScore(Score score) {
-        this.score = score;
-    }
-
-    public Menu getMenu() {
-        return menu;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }
-
-    public Set<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(Set<Payment> payments) {
-        this.payments = payments;
-    }
-
-    public Set<Promotion> getPromotions() {
-        return promotions;
-    }
-
-    public void setPromotions(Set<Promotion> promotions) {
-        this.promotions = promotions;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getCity() {
@@ -136,12 +111,36 @@ public class Restaurant {
         this.district = district;
     }
 
-    public String getMersis() {
-        return mersis;
+    public Score getScore() {
+        return score;
     }
 
-    public void setMersis(String mersis) {
-        this.mersis = mersis;
+    public void setScore(Score score) {
+        this.score = score;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public Set<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Set<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public Set<Promotion> getPromotions() {
+        return promotions;
+    }
+
+    public void setPromotions(Set<Promotion> promotions) {
+        this.promotions = promotions;
     }
 
     public Set<ServiceLocations> getServiceLocationses() {
@@ -152,6 +151,15 @@ public class Restaurant {
         this.serviceLocationses = serviceLocationses;
     }
 
+    public Set<OpenHours> getOpenHourses() {
+        return openHourses;
+    }
+
+    public void setOpenHourses(Set<OpenHours> openHourses) {
+        this.openHourses = openHourses;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -159,15 +167,12 @@ public class Restaurant {
 
         Restaurant that = (Restaurant) o;
 
-        if (!getId().equals(that.getId())) return false;
-        return getName().equals(that.getName());
+        return getId().equals(that.getId());
 
     }
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
-        result = 31 * result + getName().hashCode();
-        return result;
+        return getId().hashCode();
     }
 }

@@ -24,11 +24,11 @@ public class RegisterController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<UserDto> saveNewUser(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity saveNewUser(@RequestBody @Valid UserDto userDto) {
 
         accountService.saveAccount(userDto.createUser());
         authenticationService.authenticate(userDto.getEmail(), userDto.getPassword());
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

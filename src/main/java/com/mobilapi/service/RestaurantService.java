@@ -1,6 +1,7 @@
 package com.mobilapi.service;
 
 
+import com.mobilapi.domain.category.Category;
 import com.mobilapi.domain.shop.Promotion;
 import com.mobilapi.domain.shop.Restaurant;
 import com.mobilapi.repository.RestaurantRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RestaurantService {
@@ -44,6 +46,11 @@ public class RestaurantService {
         }
 
         return promotions;
+    }
+
+    public Set<Category> getRestaurantCategory(Long id) {
+
+        return restaurantRepository.findById(id).getCategories();
     }
 
     public Restaurant getRestaurantById(Long id) {
