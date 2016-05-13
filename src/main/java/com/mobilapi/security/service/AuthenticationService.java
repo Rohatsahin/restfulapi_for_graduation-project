@@ -1,6 +1,7 @@
-package com.mobilapi.security;
+package com.mobilapi.security.service;
 
 import com.mobilapi.domain.customer.Account;
+import com.mobilapi.security.CurrentAccountHolder;
 import com.mobilapi.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

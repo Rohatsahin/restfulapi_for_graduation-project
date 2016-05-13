@@ -1,4 +1,4 @@
-package com.mobilapi.security;
+package com.mobilapi.security.service;
 
 
 import com.mobilapi.domain.customer.Account;

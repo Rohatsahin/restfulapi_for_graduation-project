@@ -3,22 +3,17 @@ package com.mobilapi.controller.user;
 
 import com.mobilapi.domain.customer.Account;
 import com.mobilapi.domain.customer.Location;
-import com.mobilapi.domain.order.Order;
-import com.mobilapi.security.AuthenticationService;
 import com.mobilapi.service.AccountService;
 import com.mobilapi.service.LocationService;
-import com.mobilapi.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
-@RequestMapping(value = "/secure")
-public class UserController {
+public class UserController extends SecureBaseController {
 
     @Autowired
     private AccountService accountService;

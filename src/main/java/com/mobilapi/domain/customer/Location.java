@@ -32,7 +32,9 @@ public class Location {
     private String phoneNumber;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @JoinTable(name = "account_locations", joinColumns =
+            {@JoinColumn(name = "account_id", referencedColumnName = "id")}
+            , inverseJoinColumns = {@JoinColumn(name = "location_id", referencedColumnName = "id")})
     private Account account;
 
 

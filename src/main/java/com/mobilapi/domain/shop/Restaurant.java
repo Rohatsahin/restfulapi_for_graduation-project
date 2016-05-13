@@ -5,6 +5,7 @@ import com.mobilapi.domain.category.Category;
 import com.mobilapi.domain.product.Price;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 
@@ -31,13 +32,16 @@ public class Restaurant {
     @Column(nullable = false)
     private String district;
 
+    @Column(nullable = false)
+    private String url;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "restaurant")
     private Score score;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "restaurant_category", joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
             , inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")})
-    private Set<Category> categories;
+    private List<Category> categories;
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -119,11 +123,11 @@ public class Restaurant {
         this.score = score;
     }
 
-    public Set<Category> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<Category> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
@@ -159,6 +163,13 @@ public class Restaurant {
         this.openHourses = openHourses;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     @Override
     public boolean equals(Object o) {

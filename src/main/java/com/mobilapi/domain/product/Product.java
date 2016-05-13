@@ -2,6 +2,7 @@ package com.mobilapi.domain.product;
 
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,29 +24,26 @@ public class Product {
     @Column(nullable = false)
     private String body;
 
-    @Column(nullable = false)
-    private String tags;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Picture> pictures;
 
-    @Embedded
-    private Set<Pictures> pictures;
-
-    @Embedded
-    private Set<Tags> tagses;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Tags> tags;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "product_standardoptions",joinColumns = {@JoinColumn(name = "product_id",referencedColumnName = "id")}
-            ,inverseJoinColumns = {@JoinColumn(name = "standardOptions_id",referencedColumnName = "id")})
-    private Set<StandardOptions> standardOptionses;
+    @JoinTable(name = "product_standardoptions", joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
+            , inverseJoinColumns = {@JoinColumn(name = "standardOptions_id", referencedColumnName = "id")})
+    private List<StandardOptions> standardOptionses;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "product_extraoptions",joinColumns = {@JoinColumn(name = "product_id",referencedColumnName = "id")}
-            ,inverseJoinColumns = {@JoinColumn(name = "extraOptions_id",referencedColumnName = "id")})
-    private Set<ExtraOptions> extraOptionses;
+    @JoinTable(name = "product_extraoptions", joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
+            , inverseJoinColumns = {@JoinColumn(name = "extraOptions_id", referencedColumnName = "id")})
+    private List<ExtraOptions> extraOptionses;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "product_price",joinColumns = {@JoinColumn(name = "product_id",referencedColumnName = "id")}
-            ,inverseJoinColumns = {@JoinColumn(name = "price_id",referencedColumnName = "id")})
-    private Set<Price> prices;
+    @JoinTable(name = "product_price", joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
+            , inverseJoinColumns = {@JoinColumn(name = "price_id", referencedColumnName = "id")})
+    private List<Price> prices;
 
     public Long getId() {
         return id;
@@ -87,51 +85,43 @@ public class Product {
         this.body = body;
     }
 
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public Set<Pictures> getPictures() {
+    public List<Picture> getPictures() {
         return pictures;
     }
 
-    public void setPictures(Set<Pictures> pictures) {
+    public void setPictures(List<Picture> pictures) {
         this.pictures = pictures;
     }
 
-    public Set<Tags> getTagses() {
-        return tagses;
+    public List<Tags> getTags() {
+        return tags;
     }
 
-    public void setTagses(Set<Tags> tagses) {
-        this.tagses = tagses;
+    public void setTags(List<Tags> tags) {
+        this.tags = tags;
     }
 
-    public Set<StandardOptions> getStandardOptionses() {
+    public List<StandardOptions> getStandardOptionses() {
         return standardOptionses;
     }
 
-    public void setStandardOptionses(Set<StandardOptions> standardOptionses) {
+    public void setStandardOptionses(List<StandardOptions> standardOptionses) {
         this.standardOptionses = standardOptionses;
     }
 
-    public Set<ExtraOptions> getExtraOptionses() {
+    public List<ExtraOptions> getExtraOptionses() {
         return extraOptionses;
     }
 
-    public void setExtraOptionses(Set<ExtraOptions> extraOptionses) {
+    public void setExtraOptionses(List<ExtraOptions> extraOptionses) {
         this.extraOptionses = extraOptionses;
     }
 
-    public Set<Price> getPrices() {
+    public List<Price> getPrices() {
         return prices;
     }
 
-    public void setPrices(Set<Price> prices) {
+    public void setPrices(List<Price> prices) {
         this.prices = prices;
     }
 

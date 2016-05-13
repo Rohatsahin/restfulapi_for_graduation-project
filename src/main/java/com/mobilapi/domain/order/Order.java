@@ -16,7 +16,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "order_products", joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")}
             , inverseJoinColumns = {@JoinColumn(name = "products_id", referencedColumnName = "id")})
     private List<Product> products;
@@ -97,8 +97,8 @@ public class Order {
         return getId().hashCode();
     }
 
-    @PostPersist
+    @PrePersist
     public void setCreateDate() {
-        setCreateDate(new DateTime());
+        this.createDate = new DateTime();
     }
 }

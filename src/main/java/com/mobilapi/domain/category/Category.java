@@ -3,6 +3,7 @@ package com.mobilapi.domain.category;
 import com.mobilapi.domain.product.Product;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,7 +23,10 @@ public class Category {
     private String title;
 
     @Column(nullable = false)
-    private String desc;
+    private String description;
+
+    @Column(nullable = false)
+    private String url;
 
     @Column(nullable = false)
     private Boolean featured;
@@ -30,10 +34,10 @@ public class Category {
     @Column(nullable = false)
     private String icon;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
     @JoinTable(name = "product_category", joinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")}
             , inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")})
-    private Set<Product> products;
+    private List<Product> products;
 
     public Long getId() {
         return id;
@@ -67,12 +71,20 @@ public class Category {
         this.title = title;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Boolean getFeatured() {
@@ -91,11 +103,11 @@ public class Category {
         this.icon = icon;
     }
 
-    public Set<Product> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 

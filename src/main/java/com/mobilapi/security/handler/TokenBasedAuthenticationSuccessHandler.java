@@ -1,4 +1,4 @@
-package com.mobilapi.security;
+package com.mobilapi.security.handler;
 
 
 import org.springframework.security.core.Authentication;
@@ -9,11 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class TokenBasedAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
-        super.onAuthenticationSuccess(request, response, authentication);
+
+        String context = request.getContextPath();
+        String fullURL = request.getRequestURI();
+        String url = fullURL.substring(fullURL.indexOf(context) + context.length());
+
+        request.getRequestDispatcher(url).forward(request, response);
     }
 }

@@ -1,68 +1,54 @@
 package com.mobilapi.security;
 
 
+import com.mobilapi.security.filter.TokenBasedAuthenticationFilter;
+import com.mobilapi.security.service.AuthTokenGeneratorService;
+import com.mobilapi.security.service.AuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import javax.annotation.PostConstruct;
 
 @Configuration
 @EnableWebSecurity
+@Order(2)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
-    private AuthenticationManagerBuilder authenticationManagerBuilder;
+    private AuthTokenGeneratorService authTokenGeneratorService;
 
+    @Autowired
+    private AuthTokenService authTokenService;
 
-    @Bean
-    public ShaPasswordEncoder shaPasswordEncoder() {
-        return new ShaPasswordEncoder(256);
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new ExceptionMappingAuthenticationFailureHandler();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new CustomAuthenticationSuccessHandler();
-    }
-
-    @PostConstruct
-    public void init() throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(shaPasswordEncoder());
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http
-                .antMatcher("/secure/**")
+        http.antMatcher("/secure/**")
+                .csrf()
+                .disable()
                 .authorizeRequests()
-                .anyRequest().hasAnyRole("USER")
+                .anyRequest()
+                .hasAnyRole("USER")
                 .and()
-                .httpBasic()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .addFilterBefore(tokenBasedAuthenticationFilter(),
+                        BasicAuthenticationFilter.class).sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new Http403ForbiddenEntryPoint());
+    }
 
-        http.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
-
-        http.csrf().disable();
+    @Bean
+    public TokenBasedAuthenticationFilter tokenBasedAuthenticationFilter() {
+        return new TokenBasedAuthenticationFilter("/secure/**", authTokenGeneratorService, authTokenService);
     }
 }
+
+

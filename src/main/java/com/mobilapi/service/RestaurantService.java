@@ -48,7 +48,7 @@ public class RestaurantService {
         return promotions;
     }
 
-    public Set<Category> getRestaurantCategory(Long id) {
+    public List<Category> getRestaurantCategory(Long id) {
 
         return restaurantRepository.findById(id).getCategories();
     }
@@ -56,6 +56,11 @@ public class RestaurantService {
     public Restaurant getRestaurantById(Long id) {
 
         return restaurantRepository.findById(id);
+    }
+
+    public Iterable<Restaurant> getAllRestaurant() {
+
+        return restaurantRepository.findAll();
     }
 
     private List<Restaurant> getRestaurantByLocation(String city, String district) {

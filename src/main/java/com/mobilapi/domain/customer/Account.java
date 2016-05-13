@@ -6,11 +6,7 @@ import com.mobilapi.domain.enums.UserRole;
 import javax.persistence.*;
 
 @Entity
-public class Account {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Account extends AbstractAuditableEntity {
 
     @Column(nullable = false)
     private String firstName;
@@ -36,14 +32,6 @@ public class Account {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole userRole = UserRole.User;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
