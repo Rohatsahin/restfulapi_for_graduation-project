@@ -7,8 +7,9 @@ import com.mobilapi.security.handler.TokenBasedAuthenticationSuccessHandler;
 import com.mobilapi.security.service.AuthTokenGeneratorService;
 import com.mobilapi.security.service.AuthTokenService;
 import com.mobilapi.security.service.NoOpAuthenticationManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,30 +36,30 @@ import java.util.stream.Collectors;
 
 public class TokenBasedAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthenticationSuccessHandler.class);
 
     private final String TOKEN_FILTER_APPLIED = "TOKEN_FILTER_APPLIED";
+
+    @Autowired
     private AuthTokenGeneratorService authTokenGeneratorService;
+
+    @Autowired
     private AuthTokenService authTokenService;
 
-    public TokenBasedAuthenticationFilter(String defaultFilterProcessesUrl,
-                                          AuthTokenGeneratorService authTokenGeneratorService,
-                                          AuthTokenService authTokenService) {
+    public TokenBasedAuthenticationFilter(String defaultFilterProcessesUrl) {
+
         super(defaultFilterProcessesUrl);
-        super.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(
-                defaultFilterProcessesUrl));
+        super.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(defaultFilterProcessesUrl));
         super.setAuthenticationManager(new NoOpAuthenticationManager());
         setAuthenticationSuccessHandler(new TokenBasedAuthenticationSuccessHandler());
-        this.authTokenGeneratorService = authTokenGeneratorService;
-        this.authTokenService = authTokenService;
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-                                                HttpServletResponse arg1) throws AuthenticationException,
-            IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException, IOException, ServletException {
 
         AbstractAuthenticationToken userAuthenticationToken = null;
+
         request.setAttribute(TOKEN_FILTER_APPLIED, Boolean.TRUE);
 
         String token = request.getHeader(Constant.HEADER_SECURITY_TOKEN);
@@ -67,41 +68,6 @@ public class TokenBasedAuthenticationFilter extends AbstractAuthenticationProces
             throw new AuthenticationServiceException("Bad Token");
 
         return userAuthenticationToken;
-    }
-
-    /**
-     * authenticate the user based on token
-     *
-     * @return
-     */
-    private AbstractAuthenticationToken authenticateByToken(String token) {
-        if (null == token) {
-            return null;
-        }
-
-        AbstractAuthenticationToken authToken = null;
-
-        try {
-            String[] tokens = authTokenGeneratorService.decode(token);
-
-            AuthToken tokenEntry = authTokenService.findAccountByTokenAndSeries(
-                    tokens[0], tokens[1]);
-            if (null == tokenEntry) {
-                return null;
-            }
-
-
-            User securityUser = (User) createUserDetails(tokenEntry.getAccount());
-
-            authToken = new UsernamePasswordAuthenticationToken(
-                    securityUser.getUsername(), "",
-                    securityUser.getAuthorities());
-        } catch (Exception ex) {
-            logger.error("Failed to authenticate user for token" + token
-                    + "{ }", ex);
-        }
-
-        return authToken;
     }
 
     @Override
@@ -119,6 +85,34 @@ public class TokenBasedAuthenticationFilter extends AbstractAuthenticationProces
 
     }
 
+    private AbstractAuthenticationToken authenticateByToken(String token) {
+
+        if (null == token) {
+            return null;
+        }
+
+        AbstractAuthenticationToken authToken = null;
+
+        try {
+            String[] tokens = authTokenGeneratorService.decode(token);
+
+            AuthToken tokenEntry = authTokenService.findAccountByTokenAndSeries(tokens[0], tokens[1]);
+
+            if (null == tokenEntry) {
+                return null;
+            }
+
+            User securityUser = (User) createUserDetails(tokenEntry.getAccount());
+
+            authToken = new UsernamePasswordAuthenticationToken(securityUser.getUsername(), "", securityUser.getAuthorities());
+
+        } catch (Exception ex) {
+            LOGGER.error("Failed to authenticate user for token" + token + "{ }", ex);
+        }
+
+        return authToken;
+    }
+
     private UserDetails createUserDetails(Account account) {
         User user = new User(account.getEmail(), account.getPassword(), true, true, true, true, getAuthorities(account));
 
@@ -130,6 +124,5 @@ public class TokenBasedAuthenticationFilter extends AbstractAuthenticationProces
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
-
 }
 

@@ -75,14 +75,12 @@ public class AuthTokenGeneratorService {
         }
 
         if (!Base64.isBase64(token.getBytes())) {
-            throw new InvalidCookieException("User token was not Base64 encoded; value was '" + token
-                    + "'");
+            throw new InvalidCookieException("User token was not Base64 encoded; value was '" + token + "'");
         }
 
         String cookieAsPlainText = new String(Base64.decode(token.getBytes()));
 
-        String[] tokens = StringUtils.delimitedListToStringArray(
-                cookieAsPlainText, DELIMITER);
+        String[] tokens = StringUtils.delimitedListToStringArray(cookieAsPlainText, DELIMITER);
 
         if (tokens.length < 2) {
             return null;

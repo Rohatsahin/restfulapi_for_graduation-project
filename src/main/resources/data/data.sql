@@ -1,0 +1,2 @@
+--password : 12345
+INSERT INTO Account (id, city, district, email, first_name, last_name, password, phone, user_role, created_date, last_modified_date, version) VALUES ('1', 'California', 'minnesota', 'omnifood@gmail.com', 'Rohat', 'Sahin', '8cb2237d0679ca88db6464eac60da96345513964', '09008006092', 'User', NOW(), NULL, 0);

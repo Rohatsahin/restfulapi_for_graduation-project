@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LogoutSuccessHandlerImpl extends
-        AbstractAuthenticationTargetUrlRequestHandler implements
+public class LogoutSuccessHandlerImpl extends AbstractAuthenticationTargetUrlRequestHandler implements
         org.springframework.security.web.authentication.logout.LogoutSuccessHandler {
 
     @Autowired
@@ -33,13 +32,13 @@ public class LogoutSuccessHandlerImpl extends
 
     private void deleteAuthenticationToken(HttpServletRequest request) {
         String token = request.getHeader(Constant.HEADER_SECURITY_TOKEN);
+
         if (null == token || token.trim().length() == 0) {
             return;
         }
 
         String[] tokens = authTokenGeneratorService.decode(token);
         authTokenService.deleteByTokenAndSeries(tokens[0], tokens[1]);
-
     }
 }
 

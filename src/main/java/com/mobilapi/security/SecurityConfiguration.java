@@ -22,13 +22,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
-    @Autowired
-    private AuthTokenGeneratorService authTokenGeneratorService;
-
-    @Autowired
-    private AuthTokenService authTokenService;
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.antMatcher("/secure/**")
@@ -47,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public TokenBasedAuthenticationFilter tokenBasedAuthenticationFilter() {
-        return new TokenBasedAuthenticationFilter("/secure/**", authTokenGeneratorService, authTokenService);
+        return new TokenBasedAuthenticationFilter("/secure/**");
     }
 }
 

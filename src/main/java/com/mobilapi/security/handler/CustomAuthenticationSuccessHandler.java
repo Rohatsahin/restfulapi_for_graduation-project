@@ -22,15 +22,14 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private AuthTokenGeneratorService authTokenGeneratorService;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response, Authentication authentication)
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication)
             throws IOException, ServletException {
 
-        final String authToken = authTokenGeneratorService
-                .generateToken(authentication);
+        final String authToken = authTokenGeneratorService.generateToken(authentication);
+
         response.addHeader(Constant.HEADER_SECURITY_TOKEN, authToken);
-        request.getRequestDispatcher(defaultTargetUrl).forward(request,
-                response);
+        request.getRequestDispatcher(defaultTargetUrl).forward(request, response);
 
     }
 }
