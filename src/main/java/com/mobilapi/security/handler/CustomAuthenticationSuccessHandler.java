@@ -15,8 +15,6 @@ import java.io.IOException;
 
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${auth.success.url}")
-    private String defaultTargetUrl;
 
     @Autowired
     private AuthTokenGeneratorService authTokenGeneratorService;
@@ -29,7 +27,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         final String authToken = authTokenGeneratorService.generateToken(authentication);
 
         response.addHeader(Constant.HEADER_SECURITY_TOKEN, authToken);
-        request.getRequestDispatcher(defaultTargetUrl).forward(request, response);
+
 
     }
 }

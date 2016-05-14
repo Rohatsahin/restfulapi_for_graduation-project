@@ -29,7 +29,7 @@ public class MvcSecure extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/", "/login", "/general/**")
+                .antMatchers("/login", "/general/**")
                 .permitAll().anyRequest().authenticated().and().formLogin()
                 .failureHandler(authenticationFailureHandler())
                 .successHandler(authenticationSuccessHandler())
