@@ -16,11 +16,6 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Iterable<Category> getAllCategory() {
-
-        return categoryRepository.findAll();
-    }
-
     public List<Product> getAllProductByCategory(Long id) {
 
         Category category = categoryRepository.findOne(id);

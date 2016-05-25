@@ -26,6 +26,8 @@ public class UserDto {
 
     private String district;
 
+    private String phone;
+
     public String getFirstName() {
         return firstName;
     }
@@ -74,6 +76,13 @@ public class UserDto {
         this.district = district;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public Account createUser() {
 
@@ -84,6 +93,7 @@ public class UserDto {
         account.setPassword(password);
         account.setCity(city);
         account.setDistrict(district);
+        account.setPassword(phone);
 
         return account;
     }

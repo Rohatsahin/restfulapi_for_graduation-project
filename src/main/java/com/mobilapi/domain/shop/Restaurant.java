@@ -2,7 +2,6 @@ package com.mobilapi.domain.shop;
 
 
 import com.mobilapi.domain.category.Category;
-import com.mobilapi.domain.product.Price;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,10 +17,13 @@ public class Restaurant {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String storeName;
 
     @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
+    private String description;
 
     @Column(nullable = false)
     private String phoneNumber;
@@ -34,6 +36,8 @@ public class Restaurant {
 
     @Column(nullable = false)
     private String url;
+
+    private Long currentScore;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "restaurant")
     private Score score;
@@ -49,12 +53,6 @@ public class Restaurant {
             {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
             , inverseJoinColumns = {@JoinColumn(name = "payment_id", referencedColumnName = "id")})
     private Set<Payment> payments;
-
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "restaurant_promotion", joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
-            , inverseJoinColumns = {@JoinColumn(name = "promotion_id", referencedColumnName = "id")})
-    private Set<Promotion> promotions;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "restaurant_service_locations", joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
@@ -75,12 +73,20 @@ public class Restaurant {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getStoreName() {
+        return storeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getAddress() {
@@ -139,14 +145,6 @@ public class Restaurant {
         this.payments = payments;
     }
 
-    public Set<Promotion> getPromotions() {
-        return promotions;
-    }
-
-    public void setPromotions(Set<Promotion> promotions) {
-        this.promotions = promotions;
-    }
-
     public Set<ServiceLocations> getServiceLocationses() {
         return serviceLocationses;
     }
@@ -169,6 +167,14 @@ public class Restaurant {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Long getCurrentScore() {
+        return currentScore;
+    }
+
+    public void setCurrentScore(Long currentScore) {
+        this.currentScore = currentScore;
     }
 
     @Override

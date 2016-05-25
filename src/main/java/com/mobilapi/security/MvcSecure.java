@@ -1,5 +1,6 @@
 package com.mobilapi.security;
 
+import com.mobilapi.configuration.SimpleCORSFilter;
 import com.mobilapi.security.handler.CustomAuthenticationFailureHandler;
 import com.mobilapi.security.handler.CustomAuthenticationSuccessHandler;
 import com.mobilapi.security.handler.LogoutSuccessHandlerImpl;
@@ -13,7 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -28,7 +29,9 @@ public class MvcSecure extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
+        http
+                .addFilterBefore(new SimpleCORSFilter(), ChannelProcessingFilter.class)
+                .csrf().disable().authorizeRequests()
                 .antMatchers("/login", "/general/**")
                 .permitAll().anyRequest().authenticated().and().formLogin()
                 .failureHandler(authenticationFailureHandler())
