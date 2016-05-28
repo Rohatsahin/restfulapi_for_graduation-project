@@ -60,11 +60,10 @@ public class CategoryDto {
     public Category createCategory() {
 
         Category category = new Category();
-        category.setGuid(UUID.randomUUID().toString());
         category.setTitle(getTitle());
         category.setThumb(getThumb());
         category.setFeatured(getFeatured());
-        category.setDescription(getdescription());
+        category.setDesc(getdescription());
         category.setIcon(getIcon());
 
         return category;

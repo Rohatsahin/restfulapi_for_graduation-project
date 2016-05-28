@@ -1,21 +1,17 @@
 package com.mobilapi.domain.customer;
 
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
 
-
-import javax.persistence.*;
-
-@Entity
-@Table(name = "auth_token")
+@Entity(value = "auth_token", noClassnameStored = true)
 public class AuthToken extends AbstractAuditableEntity {
 
-    private static final long serialVersionUID = -9001508296580395084L;
 
     private String token;
 
     private String series;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "account_auth_token", nullable = false)
+    @Embedded
     private Account account;
 
     public String getToken() {

@@ -2,16 +2,20 @@ package com.mobilapi.repository;
 
 
 import com.mobilapi.domain.shop.Restaurant;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface RestaurantRepository extends CrudRepository<Restaurant,Long> {
+public class RestaurantRepository extends GenericRepository<Restaurant> {
 
-    List<Restaurant> findByCityAndDistrict(String city,String district);
+    public RestaurantRepository() {
+        super(Restaurant.class);
+    }
 
-    Restaurant findById(Long id);
+    public List<Restaurant> getAllRestaurant(){
+
+        return getDatastore().find(Restaurant.class).asList();
+    }
 
 }

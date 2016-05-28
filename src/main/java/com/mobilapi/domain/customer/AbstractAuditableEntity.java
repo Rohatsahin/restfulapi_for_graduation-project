@@ -1,58 +1,44 @@
 package com.mobilapi.domain.customer;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.PrePersist;
+import org.mongodb.morphia.annotations.Version;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import java.util.Date;
 
-import javax.persistence.*;
+public class AbstractAuditableEntity {
 
-@SuppressWarnings("serial")
-@MappedSuperclass
-public class AbstractAuditableEntity extends AbstractPersistable<Long> {
+    @Id
+    protected ObjectId id;
+
+    protected Date creationDate;
+
+    protected Date lastChange;
 
     @Version
-    @Column(name = "version")
-    private Long version;
+    private long version;
 
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    private DateTime createdDate;
-
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    private DateTime lastModifiedDate;
-
-    public Long getVersion() {
-        return version;
+    public AbstractAuditableEntity() {
+        super();
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
+    public ObjectId getId() {
+        return id;
     }
 
-    public DateTime getCreatedDate() {
-        return createdDate;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setCreatedDate(DateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public DateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(DateTime lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public Date getLastChange() {
+        return lastChange;
     }
 
     @PrePersist
-    public void onCreate() {
-        this.createdDate = new DateTime();
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        this.lastModifiedDate = new DateTime();
+    public void prePersist() {
+        this.creationDate = (creationDate == null) ? new Date() : creationDate;
+        this.lastChange = (lastChange == null) ? creationDate : new Date();
     }
 
 }

@@ -1,30 +1,15 @@
 package com.mobilapi.domain.product;
 
-import javax.persistence.*;
+import org.mongodb.morphia.annotations.Embedded;
 
-@Entity
+@Embedded
 public class ExtraOptions {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Long price;
+    private Double value;
 
-    @Column(nullable = false)
     private Boolean selected = Boolean.FALSE;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -34,12 +19,12 @@ public class ExtraOptions {
         this.name = name;
     }
 
-    public Long getPrice() {
-        return price;
+    public Double getValue() {
+        return value;
     }
 
-    public void setPrice(Long price) {
-        this.price = price;
+    public void setValue(Double value) {
+        this.value = value;
     }
 
     public Boolean getSelected() {
@@ -48,21 +33,5 @@ public class ExtraOptions {
 
     public void setSelected(Boolean selected) {
         this.selected = selected;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ExtraOptions)) return false;
-
-        ExtraOptions that = (ExtraOptions) o;
-
-        return getId().equals(that.getId());
-
-    }
-
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
     }
 }

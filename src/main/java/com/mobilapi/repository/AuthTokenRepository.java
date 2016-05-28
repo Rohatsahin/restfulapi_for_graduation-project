@@ -1,36 +1,38 @@
 package com.mobilapi.repository;
 
 import com.mobilapi.domain.customer.AuthToken;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-
-import org.springframework.data.repository.query.Param;
+import org.mongodb.morphia.query.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface AuthTokenRepository extends JpaRepository<AuthToken,Long> {
+public class AuthTokenRepository extends GenericRepository<AuthToken> {
 
 
-    @Transactional(readOnly = true)
-    @Query("select  authToken from AuthToken authToken where authToken.token= :token and authToken.series= :series")
-    AuthToken findAccountByTokenAndSeries(@Param("token") String token,
-                                       @Param("series") String series);
+    public AuthTokenRepository() {
+        super(AuthToken.class);
+    }
 
-    @Transactional
-    @Modifying
-    @Query("delete from AuthToken authToken where authToken.token= :token and authToken.series= :series")
-    void deleteByTokenAndSeries(@Param("token") String token,
-                                @Param("series") String series);
+    public AuthToken findAccountByTokenAndSeries(String token, String series) {
 
-    @Transactional
-    @Modifying
-    @Query(nativeQuery = true, value = "delete  from auth_token where 1="
-            + "case "
-            + "when (last_modified_date is null and TIMESTAMPDIFF(MINUTE,created_date,sysdate()) > 2) then 1 "
-            + "when (last_modified_date <> null and TIMESTAMPDIFF(MINUTE,last_modified_date,sysdate()) > 2) then 1 "
-            + "else 0 " + "end ")
-    void deleteTimedoutTokens();
+        return getDatastore().find(AuthToken.class).filter("token",token).filter("series",series).get();
+    }
+
+
+    public void deleteByTokenAndSeries(String token, String series) {
+        Query<AuthToken> query = (Query<AuthToken>) getDatastore()
+                .find(AuthToken.class).filter("token",token).filter("series",series).get();
+        getDatastore().delete(query);
+    }
+
+    //@Transactional
+    //@Modifying
+    //@Query(nativeQuery = true, value = "delete  from auth_token where 1="
+    //        + "case "
+    //       + "when (last_modified_date is null and TIMESTAMPDIFF(MINUTE,created_date,sysdate()) > 2) then 1 "
+    //     + "when (last_modified_date <> null and TIMESTAMPDIFF(MINUTE,last_modified_date,sysdate()) > 2) then 1 "
+    //   + "else 0 " + "end ")
+    public void deleteTimedoutTokens(){
+
+    }
 
 }

@@ -1,33 +1,16 @@
 package com.mobilapi.domain.product;
 
 import com.mobilapi.domain.enums.Currency;
+import org.mongodb.morphia.annotations.Embedded;
 
-import javax.persistence.*;
-
-@Entity
+@Embedded
 public class Price {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Long price;
+    private Double value;
 
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Currency currency = Currency.Turkhish_lira;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Currency currency = Currency.TL;
 
     public String getName() {
         return name;
@@ -37,12 +20,12 @@ public class Price {
         this.name = name;
     }
 
-    public Long getPrice() {
-        return price;
+    public Double getValue() {
+        return value;
     }
 
-    public void setPrice(Long price) {
-        this.price = price;
+    public void setValue(Double value) {
+        this.value = value;
     }
 
     public Currency getCurrency() {

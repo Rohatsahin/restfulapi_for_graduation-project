@@ -2,36 +2,31 @@ package com.mobilapi.domain.customer;
 
 
 import com.mobilapi.domain.enums.UserRole;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
 
-import javax.persistence.*;
 
-@Entity
+@Entity(value = "account", noClassnameStored = true)
 public class Account extends AbstractAuditableEntity {
 
-    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false)
     private String city;
 
-    @Column(nullable = false)
     private String district;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     private UserRole userRole = UserRole.User;
+
+    @Embedded
+    private Address address;
 
     public String getFirstName() {
         return firstName;
@@ -65,6 +60,14 @@ public class Account extends AbstractAuditableEntity {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getCity() {
         return city;
     }
@@ -89,34 +92,13 @@ public class Account extends AbstractAuditableEntity {
         this.userRole = userRole;
     }
 
-    public String getPhone() {
-        return phone;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Account)) return false;
 
-        Account account = (Account) o;
-
-        if (!getId().equals(account.getId())) return false;
-        if (!getFirstName().equals(account.getFirstName())) return false;
-        if (!getLastName().equals(account.getLastName())) return false;
-        return getEmail().equals(account.getEmail());
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getId().hashCode();
-        result = 31 * result + getFirstName().hashCode();
-        result = 31 * result + getLastName().hashCode();
-        result = 31 * result + getEmail().hashCode();
-        return result;
-    }
 }

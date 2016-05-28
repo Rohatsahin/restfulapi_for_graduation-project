@@ -5,7 +5,6 @@ import com.mobilapi.domain.customer.Account;
 import com.mobilapi.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,10 +23,10 @@ public class AccountService {
         return account;
     }
 
-    public Account saveAccount(Account account) {
+    public void saveAccount(Account account) {
         String hashed_password = shaPasswordEncoder.encodePassword(account.getPassword(), null);
         account.setPassword(hashed_password);
-        return accountRepository.save(account);
+        accountRepository.persist(account);
     }
 
     public boolean emailNotRegistered(String email) {

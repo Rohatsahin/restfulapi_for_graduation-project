@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Size;
 
-public class UserDto {
+public class AccountDto {
 
     private String firstName;
 
@@ -19,14 +19,14 @@ public class UserDto {
     @EmailValidator
     private String email;
 
-    @Size(min = 6, max = 12)
+    @Size(min = 5, max = 12)
     private String password;
+
+    private String phone;
 
     private String city;
 
     private String district;
-
-    private String phone;
 
     public String getFirstName() {
         return firstName;
@@ -60,6 +60,14 @@ public class UserDto {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getCity() {
         return city;
     }
@@ -74,14 +82,6 @@ public class UserDto {
 
     public void setDistrict(String district) {
         this.district = district;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public Account createUser() {

@@ -1,76 +1,32 @@
 package com.mobilapi.domain.shop;
 
+import com.mobilapi.domain.customer.AbstractAuditableEntity;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
 
-import com.mobilapi.domain.category.Category;
-
-import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+@Entity(value = "restaurant", noClassnameStored = false)
+public class Restaurant extends AbstractAuditableEntity {
 
-@Entity
-public class Restaurant {
-
-    @Id
-    @Column(name = "restaurant_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(nullable = false)
     private String storeName;
 
-    @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
-    private String description;
+    private String desc;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
-    private String city;
+    private String email;
 
-    @Column(nullable = false)
-    private String district;
+    @Embedded
+    private List<OpenHours> openHours = new ArrayList<>();
 
-    @Column(nullable = false)
-    private String url;
+    @Embedded
+    private Map map;
 
-    private Long currentScore;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "restaurant")
-    private Score score;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "restaurant_category", joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
-            , inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")})
-    private List<Category> categories;
-
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "restaurant_payments", joinColumns =
-            {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
-            , inverseJoinColumns = {@JoinColumn(name = "payment_id", referencedColumnName = "id")})
-    private Set<Payment> payments;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "restaurant_service_locations", joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
-            , inverseJoinColumns = {@JoinColumn(name = "service_location_id", referencedColumnName = "id")})
-    private Set<ServiceLocations> serviceLocationses;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "restaurant_openhour", joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")}
-            , inverseJoinColumns = {@JoinColumn(name = "openHour_id", referencedColumnName = "id")})
-    private Set<OpenHours> openHourses;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Restaurant() {
     }
 
     public String getStoreName() {
@@ -81,20 +37,20 @@ public class Restaurant {
         this.storeName = storeName;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getPhoneNumber() {
@@ -105,91 +61,27 @@ public class Restaurant {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getCity() {
-        return city;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getDistrict() {
-        return district;
+    public List<OpenHours> getOpenHours() {
+        return openHours;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
+    public void setOpenHours(List<OpenHours> openHours) {
+        this.openHours = openHours;
     }
 
-    public Score getScore() {
-        return score;
+    public Map getMap() {
+        return map;
     }
 
-    public void setScore(Score score) {
-        this.score = score;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
-
-    public Set<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(Set<Payment> payments) {
-        this.payments = payments;
-    }
-
-    public Set<ServiceLocations> getServiceLocationses() {
-        return serviceLocationses;
-    }
-
-    public void setServiceLocationses(Set<ServiceLocations> serviceLocationses) {
-        this.serviceLocationses = serviceLocationses;
-    }
-
-    public Set<OpenHours> getOpenHourses() {
-        return openHourses;
-    }
-
-    public void setOpenHourses(Set<OpenHours> openHourses) {
-        this.openHourses = openHourses;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Long getCurrentScore() {
-        return currentScore;
-    }
-
-    public void setCurrentScore(Long currentScore) {
-        this.currentScore = currentScore;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Restaurant)) return false;
-
-        Restaurant that = (Restaurant) o;
-
-        return getId().equals(that.getId());
-
-    }
-
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
+    public void setMap(Map map) {
+        this.map = map;
     }
 }

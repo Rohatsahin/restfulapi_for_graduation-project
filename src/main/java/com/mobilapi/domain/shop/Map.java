@@ -1,29 +1,21 @@
 package com.mobilapi.domain.shop;
 
 
-import javax.persistence.*;
+import org.mongodb.morphia.annotations.Embedded;
 
-@Entity
+import java.util.ArrayList;
+import java.util.List;
+
+@Embedded
 public class Map {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     private Long latitude;
 
     private Long longitude;
 
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
-    private Restaurant restaurant;
+    private Integer zoomLevel;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private List<Annotations> annotations = new ArrayList<>();
 
     public Long getLatitude() {
         return latitude;
@@ -41,11 +33,19 @@ public class Map {
         this.longitude = longitude;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public Integer getZoomLevel() {
+        return zoomLevel;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setZoomLevel(Integer zoomLevel) {
+        this.zoomLevel = zoomLevel;
+    }
+
+    public List<Annotations> getAnnotations() {
+        return annotations;
+    }
+
+    public void setAnnotations(List<Annotations> annotations) {
+        this.annotations = annotations;
     }
 }

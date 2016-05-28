@@ -1,7 +1,6 @@
 package com.mobilapi.controller.general;
 
-
-import com.mobilapi.controller.dto.UserDto;
+import com.mobilapi.controller.dto.AccountDto;
 import com.mobilapi.security.service.AuthenticationService;
 import com.mobilapi.service.AccountService;
 import org.slf4j.Logger;
@@ -19,7 +18,6 @@ public class RegisterController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 
-
     @Autowired
     private AccountService accountService;
 
@@ -28,10 +26,10 @@ public class RegisterController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity saveNewUser(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity saveNewUser(@RequestBody @Valid AccountDto accountDto) {
 
-        accountService.saveAccount(userDto.createUser());
-        authenticationService.authenticate(userDto.getEmail(), userDto.getPassword());
+        accountService.saveAccount(accountDto.createUser());
+        authenticationService.authenticate(accountDto.getEmail(), accountDto.getPassword());
 
         return new ResponseEntity(HttpStatus.OK);
     }

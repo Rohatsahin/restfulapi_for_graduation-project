@@ -1,65 +1,39 @@
 package com.mobilapi.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mobilapi.domain.category.Category;
+import com.mobilapi.domain.customer.AbstractAuditableEntity;
+import jdk.nashorn.internal.ir.annotations.Reference;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
 
-import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-@Entity
-public class Product {
+@Entity(value = "product",noClassnameStored = false)
+public class Product extends AbstractAuditableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(nullable = false)
-    private String guid;
-
-    @Column(nullable = false)
     private String thumb;
 
-    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
     private String body;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Picture> pictures;
+    @Embedded
+    private List<Price> price;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Tags> tags;
+    @Embedded
+    private List<StandardOptions> standardOptions;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "product_standardoptions", joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
-            , inverseJoinColumns = {@JoinColumn(name = "standardOptions_id", referencedColumnName = "id")})
-    private List<StandardOptions> standardOptionses;
+    @Embedded
+    private List<ExtraOptions> extraOptions;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "product_extraoptions", joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
-            , inverseJoinColumns = {@JoinColumn(name = "extraOptions_id", referencedColumnName = "id")})
-    private List<ExtraOptions> extraOptionses;
+    @Reference
+    private Category category;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "product_price", joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
-            , inverseJoinColumns = {@JoinColumn(name = "price_id", referencedColumnName = "id")})
-    private List<Price> prices;
+    private List<String> tags = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
+    private List<String> pictures = new ArrayList<>();
 
     public String getThumb() {
         return thumb;
@@ -85,62 +59,52 @@ public class Product {
         this.body = body;
     }
 
-    public List<Picture> getPictures() {
-        return pictures;
+    public List<Price> getPrice() {
+        return price;
     }
 
-    public void setPictures(List<Picture> pictures) {
-        this.pictures = pictures;
+    public void setPrice(List<Price> price) {
+        this.price = price;
     }
 
-    public List<Tags> getTags() {
+    public List<StandardOptions> getStandardOptions() {
+        return standardOptions;
+    }
+
+    public void setStandardOptions(List<StandardOptions> standardOptions) {
+        this.standardOptions = standardOptions;
+    }
+
+    public List<ExtraOptions> getExtraOptions() {
+        return extraOptions;
+    }
+
+    public void setExtraOptions(List<ExtraOptions> extraOptions) {
+        this.extraOptions = extraOptions;
+    }
+
+    @JsonIgnore
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tags> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
-    public List<StandardOptions> getStandardOptionses() {
-        return standardOptionses;
+    public List<String> getPictures() {
+        return pictures;
     }
 
-    public void setStandardOptionses(List<StandardOptions> standardOptionses) {
-        this.standardOptionses = standardOptionses;
-    }
-
-    public List<ExtraOptions> getExtraOptionses() {
-        return extraOptionses;
-    }
-
-    public void setExtraOptionses(List<ExtraOptions> extraOptionses) {
-        this.extraOptionses = extraOptionses;
-    }
-
-    public List<Price> getPrices() {
-        return prices;
-    }
-
-    public void setPrices(List<Price> prices) {
-        this.prices = prices;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Product)) return false;
-
-        Product product = (Product) o;
-
-        if (!getId().equals(product.getId())) return false;
-        return getGuid().equals(product.getGuid());
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getId().hashCode();
-        result = 31 * result + getGuid().hashCode();
-        return result;
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 }
