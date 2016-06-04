@@ -18,7 +18,7 @@ public class GenericRepository<E extends AbstractAuditableEntity> {
     }
 
 
-    public ObjectId persist(E entity) {
+    public String persist(E entity) {
         datastore.save(entity);
         return entity.getId();
     }

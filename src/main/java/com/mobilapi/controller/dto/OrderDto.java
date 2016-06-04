@@ -1,39 +1,26 @@
 package com.mobilapi.controller.dto;
 
-
-import com.mobilapi.domain.product.Product;
-
-import java.util.List;
+import com.mobilapi.domain.customer.Address;
 
 public class OrderDto {
 
-    private List<Product> products;
+    private String product_id;
 
-    private Long price;
+    private Address address;
 
-    private Long location_id;
-
-    public List<Product> getProducts() {
-        return products;
+    public String getProduct_id() {
+        return product_id;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
     }
 
-    public Long getLocation_id() {
-        return location_id;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setLocation_id(Long location_id) {
-        this.location_id = location_id;
-    }
-
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

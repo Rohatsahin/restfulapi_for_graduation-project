@@ -8,9 +8,8 @@ import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 
 import java.util.ArrayList;
-import java.util.List;
 
-@Entity(value = "product",noClassnameStored = false)
+@Entity(value = "product", noClassnameStored = false)
 public class Product extends AbstractAuditableEntity {
 
     private String thumb;
@@ -20,20 +19,20 @@ public class Product extends AbstractAuditableEntity {
     private String body;
 
     @Embedded
-    private List<Price> price;
+    private ArrayList<Price> price;
 
     @Embedded
-    private List<StandardOptions> standardOptions;
+    private ArrayList<StandardOptions> standardOptions;
 
     @Embedded
-    private List<ExtraOptions> extraOptions;
+    private ArrayList<ExtraOptions> extraOptions;
 
-    @Reference
+    @Reference()
     private Category category;
 
-    private List<String> tags = new ArrayList<>();
+    private ArrayList<String> tags = new ArrayList<>();
 
-    private List<String> pictures = new ArrayList<>();
+    private ArrayList<String> pictures = new ArrayList<>();
 
     public String getThumb() {
         return thumb;
@@ -59,27 +58,27 @@ public class Product extends AbstractAuditableEntity {
         this.body = body;
     }
 
-    public List<Price> getPrice() {
+    public ArrayList<Price> getPrice() {
         return price;
     }
 
-    public void setPrice(List<Price> price) {
+    public void setPrice(ArrayList<Price> price) {
         this.price = price;
     }
 
-    public List<StandardOptions> getStandardOptions() {
+    public ArrayList<StandardOptions> getStandardOptions() {
         return standardOptions;
     }
 
-    public void setStandardOptions(List<StandardOptions> standardOptions) {
+    public void setStandardOptions(ArrayList<StandardOptions> standardOptions) {
         this.standardOptions = standardOptions;
     }
 
-    public List<ExtraOptions> getExtraOptions() {
+    public ArrayList<ExtraOptions> getExtraOptions() {
         return extraOptions;
     }
 
-    public void setExtraOptions(List<ExtraOptions> extraOptions) {
+    public void setExtraOptions(ArrayList<ExtraOptions> extraOptions) {
         this.extraOptions = extraOptions;
     }
 
@@ -92,19 +91,19 @@ public class Product extends AbstractAuditableEntity {
         this.category = category;
     }
 
-    public List<String> getTags() {
+    public ArrayList<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
 
-    public List<String> getPictures() {
+    public ArrayList<String> getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<String> pictures) {
+    public void setPictures(ArrayList<String> pictures) {
         this.pictures = pictures;
     }
 }

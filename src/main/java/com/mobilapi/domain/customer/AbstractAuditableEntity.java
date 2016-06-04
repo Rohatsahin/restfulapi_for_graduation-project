@@ -10,11 +10,11 @@ import java.util.Date;
 public class AbstractAuditableEntity {
 
     @Id
-    protected ObjectId id;
+    private ObjectId id;
 
-    protected Date creationDate;
+    private Date creationDate;
 
-    protected Date lastChange;
+    private Date lastChange;
 
     @Version
     private long version;
@@ -23,8 +23,8 @@ public class AbstractAuditableEntity {
         super();
     }
 
-    public ObjectId getId() {
-        return id;
+    public String getId() {
+        return id.toString();
     }
 
     public Date getCreationDate() {

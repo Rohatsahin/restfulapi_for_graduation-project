@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -28,14 +28,14 @@ public class AccountServiceTest {
     private AccountRepository accountRepository;
 
     @Mock
-    private ShaPasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Test
     public void shouldSaveNewAccount() {
 
         Account account = new AccountBuilder().firstName("rohat").email("rohat@test.com").password("12345").bulid();
-        when(passwordEncoder.encodePassword("12345", null)).thenReturn("test_password");
+        when(bCryptPasswordEncoder.encode("12345")).thenReturn("test_password");
         accountService.saveAccount(account);
 
         assertThat(account.getPassword(), equalTo("test_password"));

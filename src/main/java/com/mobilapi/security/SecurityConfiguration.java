@@ -1,10 +1,8 @@
 package com.mobilapi.security;
 
 
+import com.mobilapi.configuration.SimpleCORSFilter;
 import com.mobilapi.security.filter.TokenBasedAuthenticationFilter;
-import com.mobilapi.security.service.AuthTokenGeneratorService;
-import com.mobilapi.security.service.AuthTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -12,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -24,9 +23,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/secure/**")
-                .csrf()
-                .disable()
+        http
+                .addFilterBefore(new SimpleCORSFilter(), ChannelProcessingFilter.class)
+                .csrf().disable()
+                .antMatcher("/secure/**")
                 .authorizeRequests()
                 .anyRequest()
                 .hasAnyRole("USER")

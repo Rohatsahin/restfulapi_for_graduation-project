@@ -1,5 +1,7 @@
 package com.mobilapi.controller.general;
 
+import com.mobilapi.domain.product.ExtraOptions;
+import com.mobilapi.domain.product.Product;
 import com.mobilapi.repository.ProductRepository;
 import com.mobilapi.service.CategoryService;
 import org.bson.types.ObjectId;
@@ -8,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class CategoryController extends BaseController {

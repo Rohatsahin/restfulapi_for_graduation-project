@@ -1,6 +1,7 @@
 package com.mobilapi.domain.customer;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mobilapi.domain.enums.UserRole;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -52,6 +53,7 @@ public class Account extends AbstractAuditableEntity {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -84,6 +86,7 @@ public class Account extends AbstractAuditableEntity {
         this.district = district;
     }
 
+    @JsonIgnore
     public UserRole getUserRole() {
         return userRole;
     }

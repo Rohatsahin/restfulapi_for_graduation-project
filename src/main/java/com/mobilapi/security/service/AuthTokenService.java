@@ -26,8 +26,8 @@ public class AuthTokenService {
 
     public AuthToken update(AuthToken authToken) {
 
-        ObjectId tokenId = authTokenRepository.persist(authToken);
-        return authTokenRepository.findByObjectId(tokenId);
+        String tokenId = authTokenRepository.persist(authToken);
+        return authTokenRepository.findByObjectId(new ObjectId(tokenId));
     }
 
     public void deleteExpirtedTokens() {

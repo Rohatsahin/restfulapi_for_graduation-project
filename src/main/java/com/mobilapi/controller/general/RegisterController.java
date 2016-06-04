@@ -29,7 +29,7 @@ public class RegisterController extends BaseController {
     public ResponseEntity saveNewUser(@RequestBody @Valid AccountDto accountDto) {
 
         accountService.saveAccount(accountDto.createUser());
-        authenticationService.authenticate(accountDto.getEmail(), accountDto.getPassword());
+
 
         return new ResponseEntity(HttpStatus.OK);
     }

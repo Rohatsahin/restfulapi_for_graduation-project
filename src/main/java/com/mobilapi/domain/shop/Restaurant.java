@@ -20,6 +20,8 @@ public class Restaurant extends AbstractAuditableEntity {
 
     private String email;
 
+    private String thumb;
+
     @Embedded
     private List<OpenHours> openHours = new ArrayList<>();
 
@@ -67,6 +69,14 @@ public class Restaurant extends AbstractAuditableEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getThumb() {
+        return thumb;
+    }
+
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
     }
 
     public List<OpenHours> getOpenHours() {

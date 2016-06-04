@@ -17,6 +17,8 @@ public class AccountBuilder {
 
     private String city = RandomStringUtils.random(10);
 
+    private String phone = RandomStringUtils.random(10);
+
     private String district = RandomStringUtils.random(10);
 
     private UserRole userRole = UserRole.User;
@@ -51,10 +53,16 @@ public class AccountBuilder {
         return this;
     }
 
+    public AccountBuilder phone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
     public AccountBuilder userRole(UserRole userRole) {
         this.userRole = userRole;
         return this;
     }
+
 
     public Account bulid(){
         Account account = new Account();
@@ -64,6 +72,7 @@ public class AccountBuilder {
         account.setPassword(password);
         account.setCity(city);
         account.setDistrict(district);
+        account.setPhone(phone);
         account.setUserRole(userRole);
 
         return account;

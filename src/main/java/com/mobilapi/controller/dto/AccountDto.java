@@ -93,7 +93,7 @@ public class AccountDto {
         account.setPassword(password);
         account.setCity(city);
         account.setDistrict(district);
-        account.setPassword(phone);
+        account.setPhone(phone);
 
         return account;
     }
